@@ -19,5 +19,4 @@ import org.evoleq.math.cat.marker.MathCatDsl
 
 @MathCatDsl
 infix fun <S, T> S.cross(other: T): Pair<S, T> = Pair(this, other)
-@MathCatDsl
-infix fun <S, T> S.x(other: T): Pair<S, T> = Pair(this, other)
+@MathCatDsl fun <S, T> S.x(other: T): Pair<S, T> = Pair(this, other)
