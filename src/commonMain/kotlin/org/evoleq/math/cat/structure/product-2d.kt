@@ -15,8 +15,16 @@
  */
 package org.evoleq.math.cat.structure
 
+import kotlinx.coroutines.CoroutineScope
 import org.evoleq.math.cat.marker.MathCatDsl
 
 @MathCatDsl
-infix fun <S, T> S.cross(other: T): Pair<S, T> = Pair(this, other)
-@MathCatDsl fun <S, T> S.x(other: T): Pair<S, T> = Pair(this, other)
+infix fun <S, T> S.x(other: T): Pair<S, T> = Pair(this, other)
+@MathCatDsl
+infix fun <S1,T1,S2,T2> (suspend (S1)->T1).x(other: suspend (S2)->T2): suspend (Pair<S1,S2>)->Pair<T1,T2> = {
+    pair -> this(pair.first) x other(pair.second)
+}
+@MathCatDsl
+infix fun <S1,T1,S2,T2> (suspend CoroutineScope.(S1)->T1).x(other: suspend CoroutineScope.(S2)->T2): suspend CoroutineScope.(Pair<S1,S2>)->Pair<T1,T2> = {
+    pair -> this@x(pair.first) x other(pair.second)
+}
