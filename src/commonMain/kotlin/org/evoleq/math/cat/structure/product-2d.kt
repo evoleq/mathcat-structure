@@ -21,10 +21,19 @@ import org.evoleq.math.cat.marker.MathCatDsl
 @MathCatDsl
 infix fun <S, T> S.x(other: T): Pair<S, T> = Pair(this, other)
 @MathCatDsl
+infix fun <S1,T1,S2,T2> ((S1)->T1).x(other: (S2)->T2): (Pair<S1,S2>)->Pair<T1,T2> = {
+    pair -> this(pair.first) x other(pair.second)
+}
+@MathCatDsl
 infix fun <S1,T1,S2,T2> (suspend (S1)->T1).x(other: suspend (S2)->T2): suspend (Pair<S1,S2>)->Pair<T1,T2> = {
     pair -> this(pair.first) x other(pair.second)
 }
 @MathCatDsl
 infix fun <S1,T1,S2,T2> (suspend CoroutineScope.(S1)->T1).x(other: suspend CoroutineScope.(S2)->T2): suspend CoroutineScope.(Pair<S1,S2>)->Pair<T1,T2> = {
     pair -> this@x(pair.first) x other(pair.second)
+}
+
+@MathCatDsl
+fun <R, S, T> tau():(Pair<R, Pair<S, T>>) -> Pair<S, Pair<R, T>> = {pair ->
+    pair.second.first x (pair.first x pair.second.second)
 }
